@@ -1,1 +1,2 @@
-# SS17_t3_python_task
+# Simple Python System Status Monitor
+A simple Python System Status Monitor program
