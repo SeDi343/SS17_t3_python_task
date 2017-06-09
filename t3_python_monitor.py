@@ -14,6 +14,7 @@
 #
 # \information Information from
 #              https://pythonhosted.org/psutil/
+#              https://stackoverflow.com/questions/14319023/find-out-who-is-logged-in-on-linux-using-python
 #
 
 import sys
@@ -21,6 +22,7 @@ import psutil
 import os
 import time
 import datetime
+from subprocess import Popen, PIPE, STDOUT
 
 # \033[1m
 
@@ -50,6 +52,8 @@ while True:
 	disk = psutil.disk_usage('/')
 	battery = psutil.sensors_battery()
 	users = psutil.users()
+	userammount = os.popen('who | wc -l').read()
+	userammount = userammount.rstrip()
 	
 # CLEAR SCREEN
 	
@@ -58,7 +62,7 @@ while True:
 # TERMINAL OUTPUT
 	
 	print("\033[1mSystem Status Monitor / el16b032 / BEL2 2017\033[0m\n")
-	print("Hello\033[1m", users[0][0], "\033[0myour computer has")
+	print("Hello\033[1m", users[0][0], "\033[0mThere", userammount, "users online")
 	
 	print("\033[1m", core_logic, "\033[0mlogical cores and\033[1m", core_nologic, "\033[0mphysical cores")
 	if memory.available <= 100 * 1024 * 1024:
