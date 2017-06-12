@@ -11,10 +11,13 @@
 #          Rev.: 03, 09.06.2017 - Better formating and better use of values like
 #                                 cpu_frequency.current instead of
 #                                 cpu_frequency[3]
+#          Rev.: 04, 09.06.2017 - Added online user ammount
+#          Rev.: 05, 09.06.2017 - Added singal handler for ctrl-c
 #
 # \information Information from
 #              https://pythonhosted.org/psutil/
 #              https://stackoverflow.com/questions/14319023/find-out-who-is-logged-in-on-linux-using-python
+#              https://stackoverflow.com/questions/1112343/how-do-i-capture-sigint-in-python
 #
 
 import sys
@@ -22,7 +25,8 @@ import psutil
 import os
 import time
 import datetime
-from subprocess import Popen, PIPE, STDOUT
+import signal
+
 
 # \033[1m
 
@@ -36,9 +40,14 @@ def secs2hours(secs):
 	hh, mm = divmod(mm, 60)
 	return "%d:%02d:%02d" % (hh, mm, ss)
 
+def signal_handler(signal, frame):
+	print("You pressed Ctrl+C!")
+	sys.exit(0)
+
 core_logic = psutil.cpu_count()
 core_nologic = psutil.cpu_count(logical=False)
 
+signal.signal(signal.SIGINT, signal_handler)
 while True:
 	
 # COLLECT SYSTEM INFORMATION
@@ -98,7 +107,7 @@ while True:
 	
 	for name, entries in cpu_fan.items():
 		for entry in entries:
-			print("Fanspeed", entry.label or name, "\t\033[1m", entry.current, "\t\033[0m")
+			print("Fanspeed", entry.label or name, "\t\033[1m", entry.current, "rpm\t\033[0m")
 	print("")
 	
 	
@@ -113,3 +122,4 @@ while True:
 	
 	
 	time.sleep(1)
+signal.pause()
