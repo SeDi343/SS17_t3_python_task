@@ -14,6 +14,7 @@
 #          Rev.: 04, 09.06.2017 - Added online user ammount
 #          Rev.: 05, 09.06.2017 - Added singal handler for ctrl-c
 #          Rev.: 06, 27.06.2017 - Adding try/exceptions
+#          Rev.: 07, 27.06.2017 - Rounding battery percentage
 #
 # \information Information from
 #              https://pythonhosted.org/psutil/
@@ -187,7 +188,7 @@ while True:
 # PRINT BATTERY INFORMATION
 	
 	print("Battery\t",
-		"capacity\t\033[1m", battery.percent, "\033[0m\n\t",
+		"capacity\t\033[1m", round(battery.percent, 2), "\033[0m\n\t",
 		"time left\t", secs2hours(battery.secsleft))
 	print("")
 	
